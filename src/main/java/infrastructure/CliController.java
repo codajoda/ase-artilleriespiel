@@ -35,7 +35,7 @@ public class CliController {
     public void configRun() {
         for (int i = 1; i < 3; i++) {
             while (true) {
-                System.out.println("- Add Player " + i + " by enter your name and your chosen Tank (" + gameInfoService.getAllTanks() + " ) -> {NAME} {TANK} -");
+                showInstruction("Add Player " + i + " by enter your name and your chosen Tank (" + gameInfoService.getAllTanks() + " ) -> {NAME} {TANK}");
                 String command = scanner.nextLine();
                 if (command.equalsIgnoreCase("exit")) {
                     appRunning = false;
@@ -45,11 +45,11 @@ public class CliController {
                     String[] commandSplit = command.split(" ");
                     AddPlayerEvent event = new AddPlayerEvent(commandSplit[0], commandSplit[1]);
                     if (addPlayerService.addPlayer(event)) {
-                        System.out.println("* Player " + i + " added successfully *");
+                        showSuccess("Player " + i + " added successfully");
                         break;
                     }
                 }
-                System.out.println("! Player " + i + " could not be added !");
+                showException("Player " + i + " could not be added");
             }
         }
         if (gameStartService.start()) {
@@ -70,11 +70,11 @@ public class CliController {
 
     private void endScreen() {
         view.printView();
-        System.out.println("* AND THE WINNER IS: " + gameInfoService.getWinner() + " *");
+        showSuccess("AND THE WINNER IS: " + gameInfoService.getWinner());
         while (true) {
-            System.out.println("- Type 'exit' to exit the game -");
-            System.out.println("- Type 'restart' to restart the game -");
-            System.out.println("- Type 'new' to create a new game -");
+            showInstruction("Type 'exit' to exit the game");
+            showInstruction("Type 'restart' to restart the game");
+            showInstruction("Type 'new' to create a new game");
             String command = scanner.nextLine();
             if (command.equalsIgnoreCase("exit")) {
                 appRunning = false;
@@ -92,9 +92,9 @@ public class CliController {
 
     public void turn(Player player) {
         view.printView();
-        System.out.println("- " + player.getName() + "(ID: " + player.getId() + ")" + ", it's your turn ( Health: " + player.getHealth() + "/" + player.getTank().getMaxHealth() + " ): -");
-        System.out.println("- Type 'move' if you want to move -");
-        System.out.println("- Type 'launch' if you want to launch -");
+        showInstruction(player.getName() + "(ID: " + player.getId() + ")" + ", it's your turn ( Health: " + player.getHealth() + "/" + player.getTank().getMaxHealth() + " ): ");
+        showInstruction("Type 'move' if you want to move");
+        showInstruction("Type 'launch' if you want to launch");
 
         String command = scanner.nextLine();
         if (command.equalsIgnoreCase("exit")) {
@@ -104,22 +104,22 @@ public class CliController {
             if (gameInfoService.currentPlayerCanMove()) {
                 move(player);
             } else {
-                System.out.println("! You have no fuel left in this round !");
+                showException("You have no fuel left in this round");
                 turn(player);
             }
         } else if (command.equalsIgnoreCase("launch")) {
             launchProjectile(player);
         } else {
-            System.out.println("! Something is wrong with your format !");
+            showException("Something is wrong with your format");
         }
     }
 
     void move(Player player) {
         System.out.println("ha");
         view.printView();
-        System.out.println("- " + player.getName() + ", you want to move (Fuel left: " + player.getFuel() + "/" + player.getTank().getMaxFuel() + ") -");
-        System.out.println("- Type '{{ left/right }} {{ fuel }}' to move -");
-        System.out.println("- Type 'back' to go back -");
+        showInstruction(player.getName() + ", you want to move (Fuel left: " + player.getFuel() + "/" + player.getTank().getMaxFuel() + ")");
+        showInstruction("Type '{{ left/right }} {{ fuel }}' to move");
+        showInstruction("Type 'back' to go back");
         String command = scanner.nextLine();
         if (command.equalsIgnoreCase("exit")) {
             appRunning = false;
@@ -129,13 +129,13 @@ public class CliController {
             return;
         }
         else if (!command.matches("(left|right|LEFT|RIGHT) \\d+")) {
-            System.out.println("! Something is wrong with your format !");
+            showException("Something is wrong with your format");
         } else {
             MoveEvent event = new MoveEvent(Integer.parseInt(command.split(" ")[1]), DirectionType.fromString(command.split(" ")[0]));
             if (movePlayerService.movePlayer(event)) {
                 return;
             } else {
-                System.out.println("! Invalid Move !");
+                showException("Invalid Move");
             }
         }
         move(player);
@@ -143,11 +143,11 @@ public class CliController {
 
     void launchProjectile(Player player) {
         view.printView();
-        System.out.println("- " + player.getName() + ", you want to Launch your projectile -");
-        System.out.println("- Projectiles left: -");
+        showInstruction(player.getName() + ", you want to Launch your projectile");
+        showInstruction("Projectiles left:");
         System.out.println(gameInfoService.getCurrentPlayerProjectile());
-        System.out.println("- Type '{{ angle in degrees }} {{ strength }} {{ projectile }}' to launch -");
-        System.out.println("- Type 'back' to go back -");
+        showInstruction("Type '{{ angle in degrees }} {{ strength }} {{ projectile }}' to launch");
+        showInstruction("Type 'back' to go back");
         String command = scanner.nextLine();
         if (command.equalsIgnoreCase("exit")) {
             appRunning = false;
@@ -157,16 +157,25 @@ public class CliController {
             return;
         }
         else if (!command.matches("-?\\d+ \\d+ \\w+")) {
-            System.out.println("! Something is wrong with your format !");
+            showException("Something is wrong with your format");
             launchProjectile(player);
         } else {
             LaunchProjectileEvent event = new LaunchProjectileEvent(Integer.parseInt(command.split(" ")[0]), Integer.parseInt(command.split(" ")[1]), command.split(" ")[2]);
             if (launchProjectileService.launchProjectile(event)) {
                 return;
             } else {
-                System.out.println("! Invalid Launch !");
+                showException("Invalid Launch");
             }
         }
         launchProjectile(player);
+    }
+    private void showException(String exceptionMessage) {
+        System.out.println(" ! " + exceptionMessage + " ! ");
+    }
+    private void showInstruction(String instruction) {
+        System.out.println(" - " + instruction + " - ");
+    }
+    private void showSuccess(String successMessage) {
+        System.out.println(" * " + successMessage + " * ");
     }
 }
