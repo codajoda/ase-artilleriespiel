@@ -42,7 +42,7 @@ class GameTest {
 
     @Test
     void testValidLaunchProjectile() {
-        game.shoot(45, 21, ProjectileType.NORMAL_PROJECTILE);
+        game.launchProjectile(45, 21, ProjectileType.NORMAL_PROJECTILE);
 
         assertEquals(opponentPlayer, game.getCurrentPlayer());
         assertThat(opponentPlayer.getTank().getMaxHealth(), greaterThan(opponentPlayer.getHealth()));
@@ -50,7 +50,7 @@ class GameTest {
 
     @Test
     void testInvalidTooStrongLaunchProjectile() {
-        boolean successful = game.shoot(45, 31, ProjectileType.NORMAL_PROJECTILE);
+        boolean successful = game.launchProjectile(45, 31, ProjectileType.NORMAL_PROJECTILE);
 
         assertFalse(successful);
         assertEquals(currentPlayer, game.getCurrentPlayer());
@@ -60,7 +60,7 @@ class GameTest {
     @Test
     void testInvalidEmptyInventoryProjectileLaunchProjectile() {
         currentPlayer.setInventory(List.of());
-        boolean successful = game.shoot(45, 21, ProjectileType.NORMAL_PROJECTILE);
+        boolean successful = game.launchProjectile(45, 21, ProjectileType.NORMAL_PROJECTILE);
 
         assertFalse(successful);
         assertEquals(currentPlayer, game.getCurrentPlayer());
@@ -70,7 +70,7 @@ class GameTest {
     @Test
     void testInvalidNoProjectileProjectileLaunchProjectile() {
         currentPlayer.setInventory(List.of(new InventoryItem(ProjectileType.NORMAL_PROJECTILE, 0)));
-        boolean successful = game.shoot(45, 21, ProjectileType.NORMAL_PROJECTILE);
+        boolean successful = game.launchProjectile(45, 21, ProjectileType.NORMAL_PROJECTILE);
 
         assertFalse(successful);
         assertEquals(currentPlayer, game.getCurrentPlayer());
@@ -80,22 +80,22 @@ class GameTest {
     @Test
     void testInvalidGameAlreadyOverLaunchProjectile() {
         opponentPlayer.getTank().reduceHealth(opponentPlayer.getHealth() - 1);
-        game.shoot(45, 21, ProjectileType.NORMAL_PROJECTILE);
-        boolean successful =  game.shoot(45, 21, ProjectileType.NORMAL_PROJECTILE);
+        game.launchProjectile(45, 21, ProjectileType.NORMAL_PROJECTILE);
+        boolean successful =  game.launchProjectile(45, 21, ProjectileType.NORMAL_PROJECTILE);
         assertFalse(successful);
     }
 
     @Test
     void testNextPlayer() {
-        game.shoot(45, 21, ProjectileType.NORMAL_PROJECTILE);
+        game.launchProjectile(45, 21, ProjectileType.NORMAL_PROJECTILE);
 
         Assertions.assertEquals(opponentPlayer, game.getCurrentPlayer());
     }
 
     @Test
     void testNextPlayerBackToFirst() {
-        game.shoot(45, 21, ProjectileType.NORMAL_PROJECTILE);
-        game.shoot(45, 21, ProjectileType.NORMAL_PROJECTILE);
+        game.launchProjectile(45, 21, ProjectileType.NORMAL_PROJECTILE);
+        game.launchProjectile(45, 21, ProjectileType.NORMAL_PROJECTILE);
 
         assertEquals(currentPlayer, game.getCurrentPlayer());
     }
@@ -117,7 +117,7 @@ class GameTest {
     void testWinner() {
         opponentPlayer.getTank().reduceHealth(opponentPlayer.getHealth() - 1);
 
-        game.shoot(45, 21, ProjectileType.NORMAL_PROJECTILE);
+        game.launchProjectile(45, 21, ProjectileType.NORMAL_PROJECTILE);
 
         boolean successful = game.movePlayer(1, DirectionType.RIGHT);
 

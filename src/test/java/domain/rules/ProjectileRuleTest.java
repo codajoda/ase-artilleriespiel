@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-class ShootRuleTest {
+class ProjectileRuleTest {
     @Test
     void testHitPlayer() {
         Player currentPlayer = new Player("Player 1", new SmallTank());
@@ -29,7 +29,7 @@ class ShootRuleTest {
             i++;
         }
 
-        List<Player> playersHit = ShootRule.execute(45, 21, players, currentPlayer, board, new NormalProjectile());
+        List<Player> playersHit = ProjectileRule.execute(45, 21, players, currentPlayer, board, new NormalProjectile());
 
         Assertions.assertEquals(List.of(opponentPlayer), playersHit);
     }
@@ -49,7 +49,7 @@ class ShootRuleTest {
             i++;
         }
 
-        List<Player> playersHit = ShootRule.execute(405, 21, players, currentPlayer, board, new NormalProjectile());
+        List<Player> playersHit = ProjectileRule.execute(405, 21, players, currentPlayer, board, new NormalProjectile());
 
         Assertions.assertEquals(List.of(opponentPlayer), playersHit);
     }
@@ -69,7 +69,7 @@ class ShootRuleTest {
             i++;
         }
 
-        List<Player> playersHit = ShootRule.execute(-45, 21, players, currentPlayer, board, new NormalProjectile());
+        List<Player> playersHit = ProjectileRule.execute(-45, 21, players, currentPlayer, board, new NormalProjectile());
 
         Assertions.assertEquals(List.of(opponentPlayer), playersHit);
     }
@@ -89,7 +89,7 @@ class ShootRuleTest {
             i++;
         }
 
-        List<Player> playersHit = ShootRule.execute(45, 19, players, currentPlayer, board, new NormalProjectile());
+        List<Player> playersHit = ProjectileRule.execute(45, 19, players, currentPlayer, board, new NormalProjectile());
 
         Assertions.assertEquals(new ArrayList<>(), playersHit);
     }
@@ -109,7 +109,7 @@ class ShootRuleTest {
             i++;
         }
 
-        List<Player> playersHit = ShootRule.execute(45, 16, players, currentPlayer, board, new HorizontalProjectile());
+        List<Player> playersHit = ProjectileRule.execute(45, 16, players, currentPlayer, board, new HorizontalProjectile());
 
         Assertions.assertEquals(new ArrayList<>(), playersHit);
     }
@@ -129,7 +129,7 @@ class ShootRuleTest {
             i++;
         }
         Assertions.assertDoesNotThrow(() ->
-                ShootRule.execute(45, 200, players, currentPlayer, board, new NormalProjectile())
+                ProjectileRule.execute(45, 200, players, currentPlayer, board, new NormalProjectile())
         );
     }
     @Test
@@ -147,7 +147,7 @@ class ShootRuleTest {
             i++;
         }
         Assertions.assertDoesNotThrow(() ->
-                ShootRule.execute(89, 200, players, currentPlayer, board, new NormalProjectile())
+                ProjectileRule.execute(89, 200, players, currentPlayer, board, new NormalProjectile())
         );
     }
 
@@ -166,7 +166,7 @@ class ShootRuleTest {
             i++;
         }
         Assertions.assertDoesNotThrow(() ->
-                ShootRule.execute(90, 100, players, currentPlayer, board, new NormalProjectile())
+                ProjectileRule.execute(90, 100, players, currentPlayer, board, new NormalProjectile())
         );
     }
     @Test
@@ -184,7 +184,7 @@ class ShootRuleTest {
             i++;
         }
         Assertions.assertDoesNotThrow(() ->
-                ShootRule.execute(0, 100, players, currentPlayer, board, new NormalProjectile())
+                ProjectileRule.execute(0, 100, players, currentPlayer, board, new NormalProjectile())
         );
     }
 }

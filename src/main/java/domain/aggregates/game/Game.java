@@ -9,7 +9,7 @@ import domain.entities.projectiles.ProjectileType;
 import domain.repositories.PlayerRepositoryIntf;
 import domain.rules.DamageRule;
 import domain.rules.MoveRule;
-import domain.rules.ShootRule;
+import domain.rules.ProjectileRule;
 import infrastructure.events.DirectionType;
 
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class Game implements GameIntf {
     }
 
     @Override
-    public boolean shoot(int degrees, int strength, ProjectileType projectileType) {
+    public boolean launchProjectile(int degrees, int strength, ProjectileType projectileType) {
         if (isGameEnd() || strength > 30) {
             return false;
         }
@@ -71,7 +71,7 @@ public class Game implements GameIntf {
         if (projectile == null) {
             return false;
         }
-        List<Player> playersHit = ShootRule.execute(degrees, strength, activePlayers, currentPlayer, board, projectile);
+        List<Player> playersHit = ProjectileRule.execute(degrees, strength, activePlayers, currentPlayer, board, projectile);
         if (random.nextInt(100) < 20) {
             DamageRule.execute(playersHit, activePlayers, new CriticalHitProjectileDecorator(projectile));
         } else {

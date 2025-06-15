@@ -15,7 +15,7 @@ public class LaunchProjectileService {
     public boolean launchProjectile(LaunchProjectileEvent event) {
         try {
             ProjectileType wt = ProjectileType.fromString(event.getProjectile());
-            return game.shoot(event.getDegrees(), event.getStrength(), wt);
+            return game.launchProjectile(event.getDegrees(), event.getStrength(), wt);
         }
         catch (Exception e) {
             return false;

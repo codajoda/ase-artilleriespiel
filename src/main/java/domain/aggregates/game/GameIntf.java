@@ -7,7 +7,7 @@ import infrastructure.events.DirectionType;
 
 public interface GameIntf {
     void initGame(PlayerRepositoryIntf playerRepository);
-    boolean shoot(int degrees, int strength, ProjectileType projectileType);
+    boolean launchProjectile(int degrees, int strength, ProjectileType projectileType);
     boolean movePlayer(int steps, DirectionType direction);
     Player getCurrentPlayer();
     String[][] getBoard();

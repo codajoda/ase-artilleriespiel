@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ShootRule {
+public class ProjectileRule {
     public static List<Player> execute(int angleDegrees, int strength, List<Player> players, Player currentPlayer, BoardIntf board, Projectile projectile) {
         List<MyPoint> trajectory = new ArrayList<>();
         MyPoint lastPoint = null;
